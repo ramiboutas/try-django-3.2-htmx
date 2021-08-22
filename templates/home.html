@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>List of articles</h1>
+
+<ul>
+    {% for article in articles %}
+      {% if article.title %}
+        <li> <a href="{{ article.get_absolute_url }}"> {{article.title}} - {{article.content}} </a> </li>
+      {% endif %}
+    {% endfor %}
+</ul>
+
+
+{% endblock %}

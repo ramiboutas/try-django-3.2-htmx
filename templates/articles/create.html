@@ -1,0 +1,25 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if not article %}
+
+
+<h2>New article</h2>
+<form class="" action="{% url 'article_create' %}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" name="button">Create article</button>
+</form>
+{% else %}
+<h2>New article created!</h2>
+
+<ul>
+  <li> <a href="{{ article.get_absolute_url }}"> {{ article.title }} - {{ article.content }} </a> </li>
+</ul>
+
+{% endif %}
+
+
+{% endblock %}
