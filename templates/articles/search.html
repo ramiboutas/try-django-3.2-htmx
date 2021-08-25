@@ -2,9 +2,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+<ul>
 
-<h1>{{ article.title }}</h1>
-<p>{{ article.content }}</p>
+{% for article in articles %}
+  {% if article.title %}
+    <li> <a href="{{article.get_absolute_url}}"> {{ article.title }} </a></li>
+  {% endif %}
+
+{% empty %}
+<li>No articles found</li>
+{% endfor %}
+</ul>
+
 
 
 {% endblock %}
