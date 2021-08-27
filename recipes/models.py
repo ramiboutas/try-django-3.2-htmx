@@ -35,3 +35,4 @@ class Ingredient(models.Model):
 
 class RecipeImage(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    

@@ -1,10 +1,35 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 
 from .models import Recipe, Ingredient, RecipeImage
 
+User = get_user_model()
+
+# admin.site.unregister(User)
+#
+# class RecipeInline(admin.StackedInline):
+#     model = Recipe
+#     extra = 0
+#
+#
+# class UserAdmin(admin.ModelAdmin):
+#     inlines = [RecipeInline]
+#     list_display = ['username']
+#
+# admin.site.register(User, UserAdmin)
+
+
+class IngredientInline(admin.StackedInline):
+    model = Ingredient
+    extra = 0
+    # fields = ['name', 'quantity', 'unit', 'directions']
+
+
 class RecipeAdmin(admin.ModelAdmin):
+    inlines = [IngredientInline]
     list_display = ['name', 'user']
-    readonly_fields = ['user', 'timestamp', 'updated']
+    readonly_fields = ['timestamp', 'updated']
+    raw_id_fields = ['user']
 
 
 admin.site.register(Recipe, RecipeAdmin)
