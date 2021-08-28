@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if message %}
+  <p>{{ message }}</p>
+{% endif %}
+
+
+<form class="" action="#" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {{ ingredient_form.as_p }}
+  <button type="submit" name="button">Save</button>
+</form>
+
+
+
+
+{% endblock %}

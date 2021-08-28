@@ -7,7 +7,7 @@
 
 
 <h2>New article</h2>
-<form class="" action="{% url 'article_create' %}" method="post">
+<form class="" action="{% url 'articles:create' %}" method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit" name="button">Create article</button>
