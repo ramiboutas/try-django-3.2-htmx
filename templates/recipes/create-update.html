@@ -2,6 +2,9 @@
 
 {% block content %}
 
+
+
+
 {% if message %}
   <p>{{ message }}</p>
 {% endif %}
@@ -10,14 +13,15 @@
 <form class="" action="#" method="post">
   {% csrf_token %}
   {{ form.as_p }}
-
   {% if ingredient_formset %}
   <h3>Ingredients</h3>
     <hr>
+    {{ ingredient_formset.management_form }}
     {% for form in ingredient_formset %}
+      <div class="ingredient-form">
         {{ form }}
-
-        <hr>
+      </div>
+      <hr>
     {% endfor %}
 
   {% endif %}

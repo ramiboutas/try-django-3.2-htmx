@@ -43,7 +43,7 @@ def recipe_update(request, id=None):
         parent = form.save()
         for ingredient_form in ingredient_formset:
             child = ingredient_form.save(commit=False)
-            if child.recipe is None:
+            if not hasattr(child, 'recipe'):
                 child.recipe = parent
             child.save()
         context['message'] = 'Your recipe was updated'
