@@ -22,8 +22,13 @@ User = get_user_model()
 class IngredientInline(admin.StackedInline):
     model = Ingredient
     extra = 0
+    readonly_fields = ['quantity_as_float', 'as_mks', 'as_imperial']
+
     # fields = ['name', 'quantity', 'unit', 'directions']
 
+
+class IngredientAdmin(admin.ModelAdmin):
+    readonly_fields = ['quantity_as_float', 'as_mks', 'as_imperial']
 
 class RecipeAdmin(admin.ModelAdmin):
     inlines = [IngredientInline]
@@ -33,4 +38,4 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(Ingredient)
+admin.site.register(Ingredient, IngredientAdmin)
