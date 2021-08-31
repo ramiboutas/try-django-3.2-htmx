@@ -34,7 +34,7 @@ def recipe_update(request, id=None):
     recipe = get_object_or_404(Recipe, id=id, user=request.user)
     form = RecipeForm(request.POST or None, instance=recipe)
 
-    IngredientFormset = modelformset_factory(Ingredient, extra=2, form=IngredientForm)
+    IngredientFormset = modelformset_factory(Ingredient, extra=0, form=IngredientForm)
     qs = recipe.ingredient_set.all()
     ingredient_formset = IngredientFormset(request.POST or None, queryset=qs)
 
@@ -43,8 +43,7 @@ def recipe_update(request, id=None):
         parent = form.save()
         for ingredient_form in ingredient_formset:
             child = ingredient_form.save(commit=False)
-            if not hasattr(child, 'recipe'):
-                child.recipe = parent
+            child.recipe = parent
             child.save()
         context['message'] = 'Your recipe was updated'
     return render(request, 'recipes/create-update.html', context)
