@@ -3,16 +3,10 @@
 
 {% block content %}
 
-<h1>{{ recipe.name }} <small> <a href="{{ recipe.get_edit_url }}">Edit</a> </small> </h1>
-<p>{{ recipe.description }}</p>
+<div class="" hx-get='{{ recipe_hx_url }}' hx-trigger='revealed'>
+  <div class="htmx-indicator"> Loading... </div>
 
-{% for ingredient in recipe.get_ingredients %}
-  <h2>{{ingredient.name}}</h2>
-  <p>{{ingredient.as_imperial}}</p>
-  <p>{{ingredient.as_mks}}</p>
-{% empty %}
-  <p>No ingredients associated</p>
-{% endfor %}
+</div>
 
 
 {% endblock %}

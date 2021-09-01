@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms.models import modelformset_factory
+from django.http import HttpResponse
+from django.urls import reverse
 
 from .models import Recipe, Ingredient
 from .forms import RecipeForm, IngredientForm
@@ -15,8 +17,20 @@ def recipe_list(request):
 
 @login_required
 def recipe_detail(request, id=None):
-    context = {'recipe': get_object_or_404(Recipe, id=id, user=request.user)}
+    recipe_hx_url = reverse('recipes:hx-detail', kwargs={'id': id})
+    context = {'recipe_hx_url': recipe_hx_url}
     return render(request, 'recipes/detail.html', context)
+
+@login_required
+def hx_recipe_detail(request, id=None):
+    try:
+        obj = Recipe.objects.get(id=id, user=request.user)
+    except:
+        obj = None
+    if obj is None:
+        return HttpResponse("Not Found")
+    context = {'recipe': obj}
+    return render(request, 'recipes/partials/detail.html', context)
 
 @login_required
 def recipe_create(request):
@@ -46,4 +60,6 @@ def recipe_update(request, id=None):
             child.recipe = parent
             child.save()
         context['message'] = 'Your recipe was updated'
+    if request.htmx:
+        return render(request, 'recipes/partials/forms.html', context)
     return render(request, 'recipes/create-update.html', context)
