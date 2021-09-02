@@ -1,5 +1,7 @@
+{% load static %}
 
 <form class="" action="#" method="post" hx-post='.' hx-swap='outerHTML'>
+
   {% csrf_token %}
   {{ form.as_p }}
   {% if ingredient_formset %}
@@ -15,5 +17,5 @@
     <div id="empty-form" class="hidden">{{ ingredient_formset.empty_form }}</div>
     <button id="add-more" type="button">Add more</button>
   {% endif %}
-  <button type="submit" name="button">Save</button>
+  <button type="submit" name="button">Save  <small class="htmx-indicator">...</small></button>
 </form>
