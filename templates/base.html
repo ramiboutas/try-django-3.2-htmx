@@ -6,13 +6,8 @@
     <title> CodingForEntrepeneurs - Justin Mitchel Tutorial - Try Django 3.2  </title>
   </head>
   <body>
-
-    <h1>Search</h1>
-    <form class="" action="{% url 'articles:search' %}">
-      <input type="text" placeholder="Input your search" name="q">
-      <input type="submit" name="" value="Go">
-    </form>
-
+    <h1>Hello World</h1>
+    {% include "search/search-form.html" %}
 
     {% block content %}
 

@@ -1,21 +1,11 @@
 {% load static %}
 
-<form class="" action="#" method="post" hx-post='.' hx-swap='outerHTML'>
-
+<form class="" action="#" method="post" hx-post='.' hx-swap='outerHTML' hx-trigger="{% if form.instance.id %}change delay:500ms, {% endif %}submit">
   {% csrf_token %}
   {{ form.as_p }}
-  {% if ingredient_formset %}
-  <h3>Ingredients</h3>
-    <hr>
-    {{ ingredient_formset.management_form }}
-    <div id="ingredient-form-list">
-      {% for form in ingredient_formset %}
-        <div class="ingredient-form"> {{ form }} </div>
-        <hr>
-      {% endfor %}
-    </div>
-    <div id="empty-form" class="hidden">{{ ingredient_formset.empty_form }}</div>
-    <button id="add-more" type="button">Add more</button>
-  {% endif %}
   <button type="submit" name="button">Save  <small class="htmx-indicator">...</small></button>
+
+  {% if message %}
+    <p>{{ message }}</p>
+  {% endif %}
 </form>

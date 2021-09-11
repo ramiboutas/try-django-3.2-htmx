@@ -19,7 +19,7 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect(reverse_lazy('home'))
+            return redirect(request.GET.get('next'))
     else:
         form = AuthenticationForm(request)
     context = {'form': form}

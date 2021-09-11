@@ -11,4 +11,8 @@ urlpatterns = [
     path('<int:id>/', recipe_detail, name='detail'),
     path('hx/<int:id>/', hx_recipe_detail, name='hx-detail'),
 
+    path('hx/<int:parent_id>/ingredient/<int:id>/', hx_ingredient_update, name='hx-ingredient-detail'),
+    path('hx/<int:parent_id>/ingredient/new/', hx_ingredient_update, name='hx-ingredient-create'),
+
+
 ]
