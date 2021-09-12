@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404
 from django.urls import reverse
 
 from .models import Recipe, Ingredient
-from .forms import RecipeForm, IngredientForm
+from .forms import RecipeForm, IngredientForm, RecipeImageForm
 
 
 @login_required
@@ -20,6 +20,48 @@ def recipe_detail(request, id=None):
     recipe_hx_url = reverse('recipes:hx-detail', kwargs={'id': id})
     context = {'recipe_hx_url': recipe_hx_url}
     return render(request, 'recipes/detail.html', context)
+
+@login_required
+def recipe_delete(request, id=None):
+    try:
+        obj = Recipe.objects.get(id=id, user=request.user)
+    except:
+        obj = None
+    if obj is None:
+        if request.htmx:
+            return HttpResponse("Not Found")
+        raise Http404
+    if request.method == "POST":
+        obj.delete()
+        success_url = reverse("recipes:list")
+        if request.htmx:
+            headers = {'HX-Redirect': success_url}
+            return HttpResponse("Success", headers=headers)
+        return redirect(success_url)
+    context = {'object': obj}
+    return render(request, 'recipes/delete.html', context)
+
+
+@login_required
+def ingredient_delete(request, parent_id=None, id=None):
+    try:
+        obj = Ingredient.objects.get(id=id, recipe__id=parent_id, recipe__user=request.user)
+    except:
+        obj = None
+    if obj is None:
+        if request.htmx:
+            return HttpResponse("Not Found")
+        raise Http404
+
+    if request.method == "POST":
+        obj.delete()
+        success_url = reverse("recipes:detail", kwargs={"id": parent_id})
+        if request.htmx:
+            # headers = {'HX-Redirect': success_url}
+            return HttpResponse()
+        return redirect(success_url)
+    context = {'object': obj}
+    return render(request, 'recipes/delete.html', context)
 
 @login_required
 def hx_recipe_detail(request, id=None):
@@ -93,3 +135,16 @@ def hx_ingredient_update(request, parent_id=None, id=None):
         context['ingredient'] = new_obj
         return render(request, 'recipes/partials/ingredient-inline.html', context)
     return render(request, 'recipes/partials/ingredient-form.html', context)
+
+
+def recipe_image_upload(request, id=None):
+    template_name = "recipes/image-form.html"
+    if request.htmx:
+        template_name = "recipes/partials/hx-image-form.html"
+    form = RecipeImageForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.recipe_id = id # there is better alternative (handling 404)
+        obj.save()
+
+    return render(request, template_name, {"form": form})

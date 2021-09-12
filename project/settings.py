@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_htmx',
+    # 'storages',
     'articles.apps.ArticlesConfig',
     'accounts.apps.AccountsConfig',
     'recipes.apps.RecipesConfig',
@@ -160,7 +161,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
+STATIC_ROOT = BASE_DIR / "staticfiles-cdn" # in production, we want cdn
+
+STATIC_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media" # in production, we want cdn
+
+
+# from .cdn.conf import *
 
 
 # Default primary key field type

@@ -1,6 +1,12 @@
 from django import forms
 
-from .models import Recipe, Ingredient
+from .models import Recipe, Ingredient, RecipeImage
+
+class RecipeImageForm(forms.ModelForm):
+    class Meta:
+        model = RecipeImage
+        fields = ['image']
+
 
 class RecipeForm(forms.ModelForm):
     required_css_class = 'required-field'

@@ -1,9 +1,25 @@
 from django.shortcuts import render
 
+from articles.models import Article
+from recipes.models import Recipe
+
+SEARCH_TYPE_MAPPING = {
+    'articles': Article,
+    'article': Article,
+    'recipes': Recipe,
+    'recipe': Recipe,
+}
+
 def search(request):
     query = request.GET.get('q')
-    context = {'queryset': query}
+    search_type = request.GET.get('type')
+    klass = Recipe
+    if search_type in SEARCH_TYPE_MAPPING.keys():
+        Klass = SEARCH_TYPE_MAPPING[search_type]
+    qs = Klass.objects.search(query=query)
+    context = {'queryset': qs}
     template = "search/results.html"
     if request.htmx:
+        context['queryset'] = qs[:5]
         template = "search/partials/hx-results.html"
     return render(request, template, context)

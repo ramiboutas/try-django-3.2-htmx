@@ -37,5 +37,6 @@ class RecipeAdmin(admin.ModelAdmin):
     raw_id_fields = ['user']
 
 
+admin.site.register(RecipeImage)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)

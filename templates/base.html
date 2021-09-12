@@ -12,5 +12,13 @@
     {% block content %}
 
     {% endblock %}
+
+    <script type="text/javascript">
+    // hx-headers='{"X-CSRFToken": "{{ csrf_token }}" }'
+    // alternative 
+      document.body.addEventListener('htmx:configRequest', (event) =>{
+          event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}'
+      })
+    </script>
   </body>
 </html>

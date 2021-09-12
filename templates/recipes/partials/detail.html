@@ -1,5 +1,8 @@
-<h1>{{ recipe.name }} <small> <a href="{{ recipe.get_edit_url }}">Edit</a> </small> </h1>
+<h1>{{ recipe.name }} </h1>
 <p>{{ recipe.description }}</p>
+
+<small> <a href="{{ recipe.get_edit_url }}">Edit</a> </small>
+<small> <a href="{{ recipe.get_delete_url }}" hx-post="{{recipe.get_delete_url}}" hx-confirm="Are you sure you want to delete {{ recipe.name }}?" hx-trigger="click">Delete</a> </small> 
 
 {% for ingredient in recipe.get_ingredients %}
   <h2>{{ingredient.name}}</h2>

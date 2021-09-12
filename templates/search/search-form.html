@@ -1,18 +1,26 @@
 
 <h1>Search</h1>
-<form class="" action="{% url 'search' %}">
-  <input type="text" placeholder="Input your search" name="q" value="{{ request.GET.q }}">
-  <select type="" name="type">
-  {% if request.GET.type == 'articles'%}
-    <option value="articles" selected>Articles</option>
-  {% else %}
-    <option value="articles">Articles</option>
-  {% endif %}
-  {% if request.GET.type == 'recipes'%}
-    <option value="recipes" selected>Recipes</option>
-  {% else %}
-    <option value="recipes">Recipes</option>
-  {% endif %}
-  </select>
-  <input type="submit" name="" value="Go">
-</form>
+<div>
+  <form action="{% url 'search' %}">
+
+    <select type="" name="type" id="search-type" hx-get="{% url 'search' %}" hx-trigger="keyup changed delay:200ms" hx-include="#search-query" hx-target="#typeahead-results">
+    {% if request.GET.type == 'articles'%}
+      <option value="articles" selected>Articles</option>
+    {% else %}
+      <option value="articles">Articles</option>
+    {% endif %}
+
+    {% if request.GET.type == 'recipes'%}
+      <option value="recipes" selected>Recipes</option>
+    {% else %}
+      <option value="recipes">Recipes</option>
+    {% endif %}
+    </select>
+
+    <input id="search-query" type="text" placeholder="Input your search" name="q" value="{{ request.GET.q }}" hx-get="{% url 'search' %}" hx-trigger="keyup changed delay:200ms" hx-include="#search-type" hx-target="#typeahead-results">
+
+    <input type="submit" name="" value="Go">
+  </form>
+
+  <div id="typeahead-results"></div>
+</div>
